@@ -1,4 +1,4 @@
-package com.example.ulist;
+package com.rithy58.ulist;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;

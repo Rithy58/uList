@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "572854954919",
+    "firebase_url": "https://ulist-de1b5.firebaseio.com",
+    "project_id": "ulist-de1b5",
+    "storage_bucket": "ulist-de1b5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:572854954919:android:41c546b3f58ef8cc",
+        "android_client_info": {
+          "package_name": "com.rithy58.ulist"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "572854954919-v8cqbmh5ep8vpmpee0uvjt4190fc0ptf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBhbt1HzReh2fBXQaTg8S_W3L8wiEIG2oQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
