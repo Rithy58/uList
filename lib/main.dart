@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ulist/screen/auth.dart';
 
 void main() => runApp(MyApp());
 
@@ -97,6 +98,27 @@ class _MyHomePageState extends State<MyHomePage> {
             Text(
               '$_counter',
               style: Theme.of(context).textTheme.display1,
+            ),
+            RaisedButton(
+              child: Text("Sign In"),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Auth()),
+                );
+              },
+            ),
+            RaisedButton(
+              child: Text("Sign Up"),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => Auth(
+                            isNew: true,
+                          )),
+                );
+              },
             ),
           ],
         ),
