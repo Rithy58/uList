@@ -20,8 +20,37 @@ class _HomeState extends State<Home> {
         title: Text("Home"),
       ),
       body: Center(
-        child: Text("Home Screen"),
-      ),
+          child: Column(
+        children: <Widget>[
+          FutureBuilder<FirebaseUser>(
+              future: widget.user,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return Text("Hello, " + snapshot.data.uid);
+                } else if (snapshot.hasError) {
+                  return Text("${snapshot.error}");
+                }
+                return CircularProgressIndicator();
+              }),
+          FutureBuilder<FirebaseUser>(
+              future: widget.user,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return RaisedButton(
+                    child: Text("Delete"),
+                    onPressed: () {
+                      snapshot.data.delete().then((_) {
+                        Navigator.pop(context);
+                      });
+                    },
+                  );
+                } else if (snapshot.hasError) {
+                  return Text("${snapshot.error}");
+                }
+                return Container();
+              }),
+        ],
+      )),
     );
   }
 }

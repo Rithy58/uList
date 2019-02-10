@@ -13,24 +13,11 @@ class Auth extends StatefulWidget {
 }
 
 class _AuthState extends State<Auth> {
-  void signup() {}
 
   @override
   Widget build(BuildContext context) {
-    String isNew;
     TextEditingController emailController = TextEditingController();
     TextEditingController passwordController = TextEditingController();
-    Widget submitButton;
-
-    if (widget.isNew) {
-      isNew = "Sign Up";
-      submitButton = SignUpButton(
-          email: emailController, password: passwordController);
-    } else {
-      isNew = "Sign In";
-      submitButton = SignInButton(
-          email: emailController, password: passwordController);
-    }
 
     return Scaffold(
       appBar: AppBar(
@@ -39,7 +26,6 @@ class _AuthState extends State<Auth> {
       body: Center(
         child: Column(
           children: [
-            Text(isNew),
             TextField(
               decoration: InputDecoration(labelText: "Email"),
               controller: emailController,
@@ -49,7 +35,7 @@ class _AuthState extends State<Auth> {
               obscureText: true,
               controller: passwordController,
             ),
-            submitButton,
+            AuthButton(email: emailController, password: passwordController, isNew: widget.isNew,),
           ],
         ),
       ),
@@ -57,15 +43,17 @@ class _AuthState extends State<Auth> {
   }
 }
 
-class SignUpButton extends StatelessWidget {
+class AuthButton extends StatelessWidget {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final TextEditingController email;
   final TextEditingController password;
-  SignUpButton({this.email, this.password});
+  final bool isNew;
+  AuthButton({this.email, this.password, this.isNew = false});
 
-  Future<FirebaseUser> _handleSignUp() async {
-    final FirebaseUser user = await _auth.createUserWithEmailAndPassword(
-        email: email.text, password: password.text);
+  Future<FirebaseUser> _handleAuth() async {
+    final FirebaseUser user = await (isNew ? _auth.createUserWithEmailAndPassword(
+        email: email.text, password: password.text) : _auth.signInWithEmailAndPassword(
+        email: email.text, password: password.text));
 
     assert(user != null);
     assert(await user.getIdToken() != null);
@@ -77,54 +65,20 @@ class SignUpButton extends StatelessWidget {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => Home(user: _handleSignUp()),
+        builder: (context) => Home(user: _handleAuth()),
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    final String submitText = isNew ? "Sign Up" : "Sign In";
+
     return RaisedButton(
       onPressed: () {
         submit(context);
       },
-      child: Text("Sign Up"),
-    );
-  }
-}
-
-class SignInButton extends StatelessWidget {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final TextEditingController email;
-  final TextEditingController password;
-  SignInButton({this.email, this.password});
-
-  Future<FirebaseUser> _handleSignIn() async {
-    final FirebaseUser user = await _auth.signInWithEmailAndPassword(
-        email: email.text, password: password.text);
-
-    assert(user != null);
-    assert(await user.getIdToken() != null);
-
-    return user;
-  }
-
-  void submit(BuildContext context) {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => Home(user: _handleSignIn()),
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return RaisedButton(
-      onPressed: () {
-        submit(context);
-      },
-      child: Text("Sign In"),
+      child: Text(submitText),
     );
   }
 }
