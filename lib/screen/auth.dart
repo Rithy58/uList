@@ -13,7 +13,6 @@ class Auth extends StatefulWidget {
 }
 
 class _AuthState extends State<Auth> {
-
   @override
   Widget build(BuildContext context) {
     TextEditingController emailController = TextEditingController();
@@ -35,7 +34,11 @@ class _AuthState extends State<Auth> {
               obscureText: true,
               controller: passwordController,
             ),
-            AuthButton(email: emailController, password: passwordController, isNew: widget.isNew,),
+            AuthButton(
+              email: emailController,
+              password: passwordController,
+              isNew: widget.isNew,
+            ),
           ],
         ),
       ),
@@ -51,9 +54,11 @@ class AuthButton extends StatelessWidget {
   AuthButton({this.email, this.password, this.isNew = false});
 
   Future<FirebaseUser> _handleAuth() async {
-    final FirebaseUser user = await (isNew ? _auth.createUserWithEmailAndPassword(
-        email: email.text, password: password.text) : _auth.signInWithEmailAndPassword(
-        email: email.text, password: password.text));
+    final FirebaseUser user = await (isNew
+        ? _auth.createUserWithEmailAndPassword(
+            email: email.text, password: password.text)
+        : _auth.signInWithEmailAndPassword(
+            email: email.text, password: password.text));
 
     assert(user != null);
     assert(await user.getIdToken() != null);
@@ -62,10 +67,11 @@ class AuthButton extends StatelessWidget {
   }
 
   void submit(BuildContext context) {
+    final Future<FirebaseUser> user = _handleAuth();
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => Home(user: _handleAuth()),
+        builder: (context) => Home(user: user),
       ),
     );
   }
